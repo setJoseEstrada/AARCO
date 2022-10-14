@@ -1,0 +1,88 @@
+﻿@model IEnumerable<AARCO.Models.Marcas>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Vehiculo</h2>
+
+<script src="~/Scripts/EventosAARCO.js"></script>
+
+<form action="/" method="post">
+    <h3>Selecciona una Marca</h3>
+    <select id="SelectMarcas" class="form-control" required>
+        <option id="0" value="0">Elige una Marca </option>
+        @foreach (var item in Model)
+        {
+
+            <option id="@item.id" value="@item.id">@item.Marca1 </option>
+
+        }
+    </select>
+
+    <h3>Selecciona SubMarca</h3>
+
+    <select id="SelectSubMarcas" class="form-control" required>
+        <option id="0" value="0">Elige una SubMarca </option>
+
+    </select>
+
+    <h3>Selecciona Modelo</h3>
+    <select id="SelectModelos" class="form-control" required>
+        <option id="0" value="0">Elige un Modelo </option>
+
+    </select>
+
+    <h3>Selecciona una Descripcion</h3>
+    <select id="SelectDescripcion" class="form-control" required>
+        <option id="0" value="0">Elige una Descripcion </option>
+
+    </select>
+
+
+    <h2>Domicilio</h2>
+
+    <h3>Codigo Postal:</h3>
+    <input type="number" class="form-control" aria-describedby="emailHelp" placeholder="Codigo Postal" id="CodigoPostal" required>
+
+    <h3>Estado:</h3>
+    <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Estado" id="Estado" disabled>
+
+    <h3>Municipio:</h3>
+    <input type="text" class="form-control" aria-describedby="emailHelp" placeholder="Municipio" id="Municipio" disabled />
+
+
+    <h3>Colonia:</h3>
+    <select id="SelectColonia" class="form-control form-control-lg">
+        <option>Elige una opcion</option>
+    </select>
+
+
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal" id="abrirModal" onclick="AbrirModal()">
+        Cotizar
+    </button>
+
+</form>
+
+<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cotizaciones</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="row" id="ventanas"> </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

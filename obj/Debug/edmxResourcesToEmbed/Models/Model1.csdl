@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AARCOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Descripcion">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="Descripcion1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DescripcionId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="idModelo" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Modelo" Relationship="Self.idModelo" FromRole="Descripcion" ToRole="Modelo" />
+  </EntityType>
+  <EntityType Name="Marcas">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="Marca" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Submarcas" Relationship="Self.idMarca" FromRole="Marcas" ToRole="Submarcas" />
+  </EntityType>
+  <EntityType Name="Modelo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="Modelo1" Type="Int16" Nullable="false" />
+    <Property Name="idSubMarca" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Descripcion" Relationship="Self.idModelo" FromRole="Modelo" ToRole="Descripcion" />
+    <NavigationProperty Name="Submarcas" Relationship="Self.idSubMarca" FromRole="Modelo" ToRole="Submarcas" />
+  </EntityType>
+  <EntityType Name="Submarcas">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="Submarca" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="idMarca" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Marcas" Relationship="Self.idMarca" FromRole="Submarcas" ToRole="Marcas" />
+    <NavigationProperty Name="Modelo" Relationship="Self.idSubMarca" FromRole="Submarcas" ToRole="Modelo" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="usuarios">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="correo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="contra" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="idModelo">
+    <End Role="Modelo" Type="Self.Modelo" Multiplicity="1" />
+    <End Role="Descripcion" Type="Self.Descripcion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Modelo">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Descripcion">
+        <PropertyRef Name="idModelo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="idMarca">
+    <End Role="Marcas" Type="Self.Marcas" Multiplicity="1" />
+    <End Role="Submarcas" Type="Self.Submarcas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Marcas">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Submarcas">
+        <PropertyRef Name="idMarca" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="idSubMarca">
+    <End Role="Submarcas" Type="Self.Submarcas" Multiplicity="1" />
+    <End Role="Modelo" Type="Self.Modelo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Submarcas">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Modelo">
+        <PropertyRef Name="idSubMarca" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AARCOEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Descripcion" EntityType="Self.Descripcion" />
+    <EntitySet Name="Marcas" EntityType="Self.Marcas" />
+    <EntitySet Name="Modelo" EntityType="Self.Modelo" />
+    <EntitySet Name="Submarcas" EntityType="Self.Submarcas" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="usuarios" EntityType="Self.usuarios" />
+    <AssociationSet Name="idModelo" Association="Self.idModelo">
+      <End Role="Modelo" EntitySet="Modelo" />
+      <End Role="Descripcion" EntitySet="Descripcion" />
+    </AssociationSet>
+    <AssociationSet Name="idMarca" Association="Self.idMarca">
+      <End Role="Marcas" EntitySet="Marcas" />
+      <End Role="Submarcas" EntitySet="Submarcas" />
+    </AssociationSet>
+    <AssociationSet Name="idSubMarca" Association="Self.idSubMarca">
+      <End Role="Submarcas" EntitySet="Submarcas" />
+      <End Role="Modelo" EntitySet="Modelo" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
